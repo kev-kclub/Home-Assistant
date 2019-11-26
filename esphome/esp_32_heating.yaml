@@ -1,0 +1,80 @@
+esphome:
+  name: esp_32_heating
+  platform: ESP32
+  board: nodemcu-32s
+  board_flash_mode: dout
+  includes:
+    - esp_32_heating_climate.h
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_pwd
+  use_address: 192.168.1.15
+
+api:
+
+logger:
+  level: DEBUG
+
+ota:
+
+dallas:
+  - pin: 23
+
+sensor:
+  - platform: dallas
+    address: 0x7800000764922028
+    id: testtemp
+    name: "Test Temp"
+
+  - platform: homeassistant
+    name: "Down Override Temp"
+    entity_id: input_number.downoverridetemp
+    id: downoverridetemp
+
+  - platform: homeassistant
+    name: "Up Override Temp"
+    entity_id: input_number.upoverridetemp
+    id: upoverridetemp
+
+  - platform: homeassistant
+    name: "Away Temp"
+    entity_id: input_number.awaytemp
+    id: awaytemp
+
+
+
+switch:
+  - platform: gpio
+    pin: 22
+    id: testrelaydown
+    name: "Test Relay Down"
+  - platform: gpio
+    pin: 21
+    id: testrelayup
+    name: "Test Relay Up"
+
+climate:
+- platform: custom
+  lambda: |-
+    auto my_custom_climate_down = new kclubClimate(&testtemp, &testrelaydown, &downoverridetemp, &awaytemp);
+    App.register_component(my_custom_climate_down);
+
+    auto my_custom_climate_up = new kclubClimate(&testtemp, &testrelayup, &upoverridetemp, &awaytemp);
+    App.register_component(my_custom_climate_up);
+
+    return {my_custom_climate_down, my_custom_climate_up};
+  climates:
+    - name: "Test Custom Down"
+      id: testCustomDown
+      visual:
+        min_temperature: 7 °C
+        max_temperature: 33 °C
+        temperature_step: 0.1 °C
+    - name: "Test Custom Up"
+      id: testCustomUp
+      visual:
+        min_temperature: 7 °C
+        max_temperature: 33 °C
+        temperature_step: 0.1 °C
+#

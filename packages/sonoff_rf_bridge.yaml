@@ -1,0 +1,74 @@
+sensor:
+  - platform: mqtt
+    name: sonoff_rf_bridge status
+    state_topic: "tele/sonoff_bridge/STATE"
+    icon: mdi:radio-tower
+
+binary_sensor:
+  - platform: mqtt
+    name: "Cloak Door"
+    state_topic: "tele/sonoff_bridge/RESULT"
+    value_template: "{{value_json.RfReceived.Data}}"
+    payload_on: "2ACE50"
+    device_class: door
+    off_delay: 5
+
+light:
+  - platform: template
+    lights:
+      snug_lamp1:
+        friendly_name: "Snug Lamp 1"
+        turn_on:
+          service: script.rf433lamp
+          data:
+            rfcode: "#AA940C"
+        turn_off:
+          service: script.rf433lamp
+          data:
+            rfcode: "#AA9404"
+      snug_lamp2:
+        friendly_name: "Snug Lamp 2"
+        turn_on:
+          service: script.rf433lamp
+          data:
+            rfcode: "#AA940A"
+        turn_off:
+          service: script.rf433lamp
+          data:
+            rfcode: "#AA9402"
+      snug_lamp3:
+        friendly_name: "Snug Lamp 3"
+        turn_on:
+          service: script.rf433lamp
+          data:
+            rfcode: "#AA9409"
+        turn_off:
+          service: script.rf433lamp
+          data:
+            rfcode: "#AA9401"
+      lounge_lamp:
+        friendly_name: "Lounge Lamp"
+        turn_on:
+          service: script.rf433lamp
+          data:
+            rfcode: "#AA940D"
+        turn_off:
+          service: script.rf433lamp
+          data:
+            rfcode: "#AA9405"
+
+# Script to publish sequence of codes to Sonoff RF Link http://192.168.1.55
+script:
+  rf433lamp:
+    sequence:
+      - service: mqtt.publish
+        data: {"topic": "cmnd/sonoff_bridge/RfSync", "payload":5180"}
+      - service: mqtt.publish
+        data: {"topic": "cmnd/sonoff_bridge/RfLow", "payload":200"}
+      - service: mqtt.publish
+        data: {"topic": "cmnd/sonoff_bridge/Rfhigh", "payload":510"}
+      - service: mqtt.publish
+        data_template: 
+          topic: "cmnd/sonoff_bridge/RfCode"
+          payload: "{{ rfcode }}"
+

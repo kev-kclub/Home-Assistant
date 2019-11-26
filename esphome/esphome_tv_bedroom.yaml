@@ -1,0 +1,6 @@
+substitutions:
+  devicename: esphome_tv_bedroom
+  shortname: tvbedroom
+  deviceip: 192.168.1.46
+
+<<: !include esphome_tv_common.yaml

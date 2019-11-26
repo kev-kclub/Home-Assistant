@@ -1,0 +1,9 @@
+#Ignore these folders
+.storage
+.cloud
+
+#ignore these files
+.ios.conf
+secrets.yaml
+known_devices.yaml
+zone.yaml

@@ -1,0 +1,6 @@
+substitutions:
+  devicename: esp_sp27_4
+  shortname: sp27_4
+  deviceip: 192.168.1.59
+
+<<: !include esp_sp27_common.yaml

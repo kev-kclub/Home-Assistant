@@ -1,0 +1,55 @@
+# Sensor: Central heating temperature
+- platform: sql
+  db_url: !secret url_db_piheating
+  queries:
+    - name: Kitchen temp
+      query: "SELECT sTemp as temp FROM sensors s WHERE sName = 'Kitchen'"
+      column: 'temp'
+      unit_of_measurement: °C
+    - name: Sun Room temp
+      query: "SELECT sTemp as temp FROM sensors s WHERE sName = 'Garden Room'"
+      column: 'temp'
+      unit_of_measurement: °C
+    - name: Bedroom temp
+      query: "SELECT sTemp as temp FROM sensors s WHERE sName = 'Bedroom1'"
+      column: 'temp'
+      unit_of_measurement: °C
+    - name: Water1 temp
+      query: "SELECT sTemp as temp FROM sensors s WHERE sName = 'Water1'"
+      column: 'temp'
+      unit_of_measurement: °C
+    - name: Water2 temp
+      query: "SELECT sTemp as temp FROM sensors s WHERE sName = 'Water2'"
+      column: 'temp'
+      unit_of_measurement: °C
+    - name: Downstairs heating
+      query: "SELECT CASE WHEN zFlame = 1 THEN 'ON' ELSE 'OFF' END as zOnOff FROM zones WHERE zName = 'Downstairs'"
+      column: 'zOnOff'
+    - name: Upstairs heating
+      query: "SELECT CASE WHEN zFlame = 1 THEN 'ON' ELSE 'OFF' END as zOnOff FROM zones WHERE zName = 'Upstairs'"
+      column: 'zOnOff'
+    - name: Hot Water
+      query: "SELECT CASE WHEN zFlame = 1 THEN 'ON' ELSE 'OFF' END as zOnOff FROM zones WHERE zName = 'Hot Water'"
+      column: 'zOnOff'
+
+# temp and pump sensors from esp32-solar
+- platform: mqtt
+  state_topic: "esp32_solar/tWater1"
+  name: "Solar Water Mid temp"
+  unit_of_measurement: °C
+- platform: mqtt
+  state_topic: "esp32_solar/tWater2"     
+  name: "Solar Water Bot temp"
+  unit_of_measurement: °C
+- platform: mqtt
+  state_topic: "esp32_solar/tPanel"     
+  name: "Solar Panel temp"
+  unit_of_measurement: °C
+- platform: mqtt
+  state_topic: "esp32_solar/solar"
+  name: "Solar"
+
+# sensor to indicate when ssl cert expires
+- platform: cert_expiry
+  host: !secret url_host
+  name: Lets Encrypt Certificate

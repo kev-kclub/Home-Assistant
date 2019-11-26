@@ -1,0 +1,65 @@
+esphome:
+  name: $devicename
+  platform: ESP8266
+  board: esp01_1m
+  board_flash_mode: dout
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_pwd
+  use_address: $deviceip
+
+api:
+
+logger:
+
+ota:
+
+# Teckin SP27:
+#         -|-
+#         -|-
+#         -|- GPIO 0 Ground for upload
+#         -|-
+#      TX -|- RX
+#     GND -|- 3V3
+# GPIO  0 Led
+# GPIO 13 Button
+# GPIO 15 Relay
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO13
+      mode: INPUT_PULLUP
+      inverted: True
+    name: $shortname Button
+    on_press: 
+      then:
+        - switch.toggle: relay
+        - if:
+            condition:
+              - switch.is_on: relay
+            then:
+              - light.turn_on: sp27_led
+            else:
+              - light.turn_off: sp27_led
+
+switch:
+  - platform: gpio
+    name: $shortname Relay
+    pin: GPIO15
+    id: relay
+
+output:
+  - platform: esp8266_pwm
+    id: blue_led
+    pin:
+      number: GPIO0
+      inverted: True
+
+light:
+  - platform: monochromatic
+    id: sp27_led
+    name: $shortname LED
+    output: blue_led
+    

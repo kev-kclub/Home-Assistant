@@ -1,0 +1,74 @@
+substitutions:
+  devicename: esphome_light_cloakroom
+  shortname: lightcloakroom
+  deviceip: 192.168.1.50
+
+esphome:
+  name: $devicename
+  platform: ESP8266
+  board: esp01_1m
+  board_flash_mode: dout
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_pwd
+  use_address: $deviceip
+
+api:
+
+logger:
+
+ota:
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO0
+      mode: INPUT_PULLUP
+      inverted: True
+    name: $shortname Button
+  - platform: gpio
+    pin:
+      number: GPIO3
+    name: $shortname PIR
+    device_class: motion
+    on_press: 
+      then:
+        - light.turn_on: sonoff_5_led
+    on_release:
+      then:
+        - light.turn_off: sonoff_5_led
+
+output:
+  - platform: esp8266_pwm
+    id: basic_green_led
+    pin:
+      number: GPIO13
+      inverted: True
+
+  - platform: gpio
+    pin:
+      number: GPIO12
+    id: gpio_relay
+
+light:
+  - platform: monochromatic
+    id: sonoff_5_led
+    name: $shortname LED
+    output: basic_green_led
+    default_transition_length: 250ms
+    effects: 
+      - strobe:
+      - strobe:
+          name: fast_strobe
+          colors:
+            - state: True
+              brightness: 100%
+              duration: 100ms
+            - state: False
+              duration: 150ms
+
+  - platform: binary
+    id: sonoff_5_light
+    name: $shortname Light
+    output: gpio_relay

@@ -1,0 +1,7 @@
+# sensor_binary.yaml
+
+# sensor to detect if solar controller is online (600s = 10m)
+- platform: ping
+  host: 192.168.1.45
+  scan_interval: 600
+  name: Solar_Controller

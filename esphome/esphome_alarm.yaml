@@ -1,0 +1,138 @@
+esphome:
+  name: esphome_alarm
+  platform: ESP32
+  board: nodemcu-32s
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_pwd
+
+api:
+
+# Enable logging
+logger:
+
+ota:
+
+substitutions:
+  devicename: alarm
+
+binary_sensor:
+  - platform: gpio
+    pin:
+      number: GPIO32
+      mode: INPUT_PULLUP
+    name: $devicename Hall PIR
+    device_class: motion
+    filters:
+      - delayed_off: 30s
+
+  - platform: gpio
+    pin:
+      number: GPIO23
+      mode: INPUT_PULLUP
+    name: $devicename Hall CO2
+    device_class: smoke
+
+  - platform: gpio
+    pin:
+      number: GPIO19
+      mode: INPUT_PULLUP
+    name: $devicename Lounge
+    device_class: motion
+    filters:
+      - delayed_off: 30s
+
+  - platform: gpio
+    pin:
+      number: GPIO18
+      mode: INPUT_PULLUP
+    name: $devicename Drawing Room
+    device_class: motion
+    filters:
+      - delayed_off: 30s
+
+  - platform: gpio
+    pin:
+      number: GPIO5
+      mode: INPUT_PULLUP
+    name: $devicename Sun Room
+    device_class: motion
+    filters:
+      - delayed_off: 30s
+
+  - platform: gpio
+    pin:
+      number: GPIO33
+      mode: INPUT_PULLUP
+    name: $devicename Study
+    device_class: motion
+    filters:
+      - delayed_off: 30s
+
+  - platform: gpio
+    pin:
+      number: GPIO25
+      mode: INPUT_PULLUP
+    name: $devicename Kitchen
+    device_class: motion
+    filters:
+      - delayed_off: 30s
+
+  - platform: gpio
+    pin:
+      number: GPIO26
+      mode: INPUT_PULLUP
+    name: $devicename Utility
+    device_class: motion
+    filters:
+      - delayed_off: 30s
+
+  - platform: gpio
+    pin:
+      number: GPIO27
+      mode: INPUT_PULLUP
+    name: $devicename Utility Door
+    device_class: door
+
+  - platform: gpio
+    pin:
+      number: GPIO14
+      mode: INPUT_PULLUP
+    name: $devicename Landing
+    device_class: motion
+    filters:
+      - delayed_off: 30s
+
+  - platform: gpio
+    pin:
+      number: GPIO12
+      mode: INPUT_PULLUP
+    name: $devicename Upstairs
+    device_class: motion
+    filters:
+      - delayed_off: 30s
+
+  - platform: gpio
+    pin:
+      number: GPIO17
+      mode: INPUT_PULLUP
+    name: $devicename Dining Door
+    device_class: door
+    filters:
+      - delayed_off: 30s
+    
+switch:
+  - platform: gpio
+    pin:
+      number: GPIO02
+      inverted: False
+      mode: OUTPUT
+    name: "Alarm LED"
+    
+  - platform: gpio
+    pin:
+      number: GPIO15
+      inverted: False
+      mode: OUTPUT
+    name: "Alarm SOUND"

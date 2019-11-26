@@ -1,0 +1,20 @@
+media_player:
+  # Sun Room
+  - platform: kodi
+    host: 192.168.1.22
+    name: Kodi Sun Room
+  
+  # Dining Room
+  - platform: kodi
+    host: 192.168.1.23
+    name: Kodi Dining Room
+  
+  # BedRoom
+  - platform: kodi
+    host: 192.168.1.24
+    name: Kodi Bedroom
+  
+  # Lounge
+  - platform: kodi
+    host: 192.168.1.25
+    name: Kodi Lounge

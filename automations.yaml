@@ -1,0 +1,11 @@
+- id: '1565340415996'
+  alias: Test Automation
+  trigger: []
+  condition: []
+  action:
+  - data:
+      title: "Smart Home Alerts"
+      message: "Something happened at home!"
+      data:
+        subtitle: "Subtitle goes here"
+    service: notify.ios_kevins_iphone

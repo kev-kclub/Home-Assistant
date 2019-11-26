@@ -1,0 +1,66 @@
+homeassistant:
+  # Packages stored in a sub-directory
+  packages: !include_dir_named packages
+
+# Configure a default setup of Home Assistant (frontend, api, etc)
+default_config:
+
+# Uncomment this if you are using SSL/TLS, running in Docker container, etc.
+# http:
+#   base_url: example.duckdns.org:8123
+http:
+  base_url: !secret url_hass
+  ssl_certificate: /ssl/cert.pem
+  ssl_key: /ssl/privkey.pem
+
+recorder:
+  db_url: !secret url_db_recorder
+  exclude:
+    entities:
+      sun.sun
+
+# KSH 20190808  add ios
+ios:
+
+# KSH 20190806 rewrite piheating platform and install
+climate:
+  platform: piheating
+
+# KSH 20190808 add alarm - control is via node-red
+alarm_control_panel:
+  - platform: manual
+    name: KClub Alarm
+    pending_time: 0
+    delay_time: 0
+    trigger_time: 10
+
+camera:
+  - platform: mjpeg
+    name: Hall Camera
+    still_image_url: http://192.168.1.52/image.jpg
+    mjpeg_url: http://192.168.1.52/video.cgi?resolution=VGA/
+    username: !secret CamUser
+    password: !secret CamPwd
+  - platform: mjpeg
+    name: Kitchen Camera
+    still_image_url: http://192.168.1.53/image.jpg
+    mjpeg_url: http://192.168.1.53/video.cgi?resolution=VGA/
+    username: !secret CamUser
+    password: !secret CamPwd
+  - platform: mjpeg
+    name: FrontDoor
+    mjpeg_url: http://192.168.1.51/cgi-bin/hi3510/snap.cgi?&-getstream&-chn=1
+
+sensor: !include sensor.yaml
+
+binary_sensor: !include sensor_binary.yaml
+
+
+# Text to speech
+tts:
+  - platform: google_translate
+
+group: !include groups.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+zone: !include zone.yaml

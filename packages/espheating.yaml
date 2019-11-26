@@ -1,0 +1,32 @@
+input_number:
+  awaytemp:
+    name: Away Temp
+    initial: 15
+    min: 7
+    max: 30
+    step: 0.5
+    unit_of_measurement: °C
+  
+  awaydays:
+    name: Away Days
+    initial: 0
+    min: 0
+    max: 60
+    step: 1
+    
+  downoverridetemp:
+    name: Override Temp Down
+    initial: 20.5
+    min: 7
+    max: 30
+    step: 0.5
+    unit_of_measurement: °C
+    
+  upoverridetemp:
+    name: Override Temp Up
+    initial: 20.0
+    min: 7
+    max: 30
+    step: 0.5
+    unit_of_measurement: °C
+

@@ -1,0 +1,5 @@
+kandk:
+  name: Kathy & Kevin
+  entities:
+    - device_tracker.kathys_iphone 
+    - device_tracker.kevins_iphone

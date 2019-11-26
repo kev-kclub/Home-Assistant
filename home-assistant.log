@@ -1,0 +1,2 @@
+2019-11-25 20:11:34 WARNING (MainThread) [homeassistant.loader] You are using a custom integration for piheating which has not been tested by Home Assistant. This component might cause stability problems, be sure to disable it if you do experience issues with Home Assistant.
+2019-11-26 09:38:34 WARNING (MainThread) [homeassistant.components.mqtt.binary_sensor] No matching payload found for entity: Cloak Door with state topic: tele/sonoff_bridge/RESULT. Payload: FC3E52, with value template Template("{{value_json.RfReceived.Data}}")
